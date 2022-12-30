@@ -16,11 +16,14 @@
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
+    "konva": "^8.3.14",
     "lodash": "^4.17.21",
     "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-konva": "^18.2.3",
     "superjson": "1.9.1",
+    "use-image": "^1.1.0",
     "zod": "^3.18.0"
   },
   "devDependencies": {

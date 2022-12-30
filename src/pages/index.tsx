@@ -11,13 +11,15 @@ const Home: NextPage = () => {
   // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const callAPI = async (event: any) => {
 
-    //https://api.artic.edu/api/v1/artworks/search?query[term][is_public_domain]=true&limit=2&fields=id,title,image_id
     console.log("event", event.target.value);
     try {
       const res = await fetch(
         `https://api.artic.edu/api/v1/artworks/search?limit=10&q=${event.target.value}&fields=id,title,artist_title,image_id`,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            'AIC-User-Agent': 'Matthew Berger (matthew17berger@gmail.com)'
+          }
         }
       );
 
@@ -71,21 +73,5 @@ const Home: NextPage = () => {
     </>
   );
 };
-
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(`https://api.artic.edu/api/v1/artworks?limit=15`,
-    {
-      method: "GET",
-      headers: {
-        'AIC-User-Agent': 'Matthew Berger (matthew17berger@gmail.com)'
-      }
-    });
-  const data = await res.json();
-
-  // Pass data to the page via props
-  return { props: { data } };
-}
-
 
 export default Home;
