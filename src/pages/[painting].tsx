@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ColorInput, NumberInput } from "@mantine/core";
 import Canvas from "../components/Canvas";
 
+// https://coolboi567.medium.com/dynamically-get-image-dimensions-from-image-url-in-react-d7e216887b68
 const loadImage = (setImageDimensions:({height, width}: {height:number, width:number}) => void, imageUrl:string) => {
   const img = new Image();
   img.src = imageUrl;
@@ -28,13 +29,8 @@ const Painting: NextPage = () => {
   const [isLoading, setLoading] = useState(false);
   const [matColor, setMatColor] = useState("#e8e8e8");
 
-
-  const [tMargin, setTMargin] = useState(0);
-  const [rMargin, setRMargin] = useState(0);
-  const [bMargin, setBMargin] = useState(0);
-  const [lMargin, setLMargin] = useState(0);
-
-  const [imageDimensions, setImageDimensions] = useState({});
+  const [margins, setMargins] = useState({tMargin: 0, rMargin: 0, bMargin: 0, lMargin: 0});
+  const [imageDimensions, setImageDimensions] = useState({width: 0, height: 0});
 
   useEffect(() => {
     if (!isReady) {
@@ -57,23 +53,6 @@ const Painting: NextPage = () => {
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No profile data</p>;
 
-  console.log("data", data);
-
-  const aspectRatios = [
-    { label: "1:1", value: "1:1" },
-    { label: "4:3", value: "4:3" },
-    { label: "16:9", value: "16:9" },
-    { label: "16:10", value: "16:10" },
-    { label: "21:9", value: "21:9" }
-  ];
-
-  const frameStyles = [
-    { label: "Modern", value: "modern" },
-    { label: "Ornate", value: "ornate" },
-    { label: "Wooden", value: "wooden" }
-  ];
-  
-
   return (
     <div className="grid grid-cols-3 bg-teal-900 h-screen">
       <div className="m-16 p-6 bg-white rounded-lg shadow-lg">
@@ -87,10 +66,10 @@ const Painting: NextPage = () => {
 
         <div className="space-y-5 mt-16">
           <div className="flex justify-between space-x-2">
-            <NumberInput label="Top" value={tMargin} onChange={(tMargin) => setTMargin(tMargin||0)}/>
-            <NumberInput label="Right" value={rMargin} onChange={(rMargin) => setRMargin(rMargin||0)}/>
-            <NumberInput label="Bottom" value={bMargin} onChange={(bMargin) => setBMargin(bMargin||0)}/>
-            <NumberInput label="Left" value={lMargin} onChange={(lMargin) => setLMargin(lMargin||0)}/>
+            <NumberInput label="Top" value={margins.tMargin} onChange={(tMargin) => setMargins({...margins, tMargin: tMargin||0})}/>
+            <NumberInput label="Right" value={margins.rMargin} onChange={(rMargin) => setMargins({...margins, rMargin: rMargin||0})}/>
+            <NumberInput label="Bottom" value={margins.bMargin} onChange={(bMargin) => setMargins({...margins, bMargin: bMargin||0})}/>
+            <NumberInput label="Left" value={margins.lMargin} onChange={(lMargin) => setMargins({...margins, lMargin: lMargin||0})}/>
           </div>
 
           <ColorInput
@@ -116,10 +95,7 @@ const Painting: NextPage = () => {
       </div>
 
       <div className="col-span-2 m-16 shadow-2xl">
-        <Canvas matColor={matColor} imageUrl={`https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`} tMargin={tMargin}
-        rMargin={rMargin} bMargin={bMargin} lMargin={lMargin} imageDimensions={imageDimensions}/>
-        {/*<img src={`https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`} alt={data.title}*/}
-        {/*     className="object-cover col-span-2 p-16" />*/}
+        <Canvas matColor={matColor} imageUrl={`https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`} margins={margins} imageDimensions={imageDimensions}/>
       </div>
     </div>
   );

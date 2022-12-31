@@ -2,10 +2,12 @@ import { Stage, Layer, Rect, Circle, Image, Line } from "react-konva";
 import Konva from "konva";
 import useImage from "use-image";
 
-const Canvas = ({ matColor, imageUrl, tMargin, rMargin, bMargin, lMargin, imageDimensions }: { matColor: string, imageUrl: string, tMargin: number, rMargin: number, bMargin: number, lMargin: number, imageDimensions: { height:number, width:number } }) => {
+const Color = require('color');
+
+const Canvas = ({ matColor, imageUrl, margins, imageDimensions }: { matColor: string, imageUrl: string, margins: {tMargin: number, rMargin: number, bMargin: number, lMargin: number}, imageDimensions: { height:number, width:number } }) => {
   const Painting = () => {
     const [image] = useImage(imageUrl);
-    return <Image image={image} width={imageDimensions.width} height={imageDimensions.height} x={lMargin} y={tMargin} />;
+    return <Image image={image} width={imageDimensions.width} height={imageDimensions.height} x={margins.lMargin} y={margins.tMargin} />;
   //   shadowColor='black' shadowBlur={0} shadowOffset={{x: 10, y: 10}} shadowOpacity={0.5}
   };
 
@@ -16,13 +18,15 @@ const Canvas = ({ matColor, imageUrl, tMargin, rMargin, bMargin, lMargin, imageD
   };
 
   return (
-    <Stage width={imageDimensions.width + lMargin + rMargin} height={imageDimensions.height + tMargin + bMargin}>
+    <Stage width={imageDimensions.width + margins.lMargin + margins.rMargin} height={imageDimensions.height + margins.tMargin + margins.bMargin}>
       <Layer>
-        <Rect width={imageDimensions.width  + lMargin + rMargin} height={imageDimensions.height + tMargin + bMargin} fill={matColor} />
+        <Rect width={imageDimensions.width  + margins.lMargin + margins.rMargin} height={imageDimensions.height + margins.tMargin + margins.bMargin} fill={matColor} />
         <MatTexture />
         <Painting />
-        <Line points={[lMargin, 900, lMargin, tMargin, 843 + lMargin, tMargin]} stroke="black" strokeWidth={2} opacity={0.25} filters={[Konva.Filters.Blur]} blurRadius={30} />
-        <Line points={[843 + lMargin, tMargin, 843 + lMargin, 900]} stroke="white" strokeWidth={2} opacity={0.4} filters={[Konva.Filters.Blur]} blurRadius={30} />
+        {/* shadow outline */}
+        <Line points={[margins.lMargin, imageDimensions.height + margins.tMargin, margins.lMargin, margins.tMargin, 843 + margins.lMargin, margins.tMargin]} stroke="black" strokeWidth={2} opacity={0.25} filters={[Konva.Filters.Blur]} blurRadius={30} />
+        {/* highlight outline */}
+        <Line points={[imageDimensions.width + margins.lMargin, margins.tMargin, imageDimensions.width + margins.lMargin, imageDimensions.height + margins.tMargin, margins.lMargin, imageDimensions.height + margins.tMargin]} stroke={Color(matColor).lighten(0.3)} strokeWidth={2} opacity={0.4} filters={[Konva.Filters.Blur]} blurRadius={30} />
       </Layer>
     </Stage>
   );

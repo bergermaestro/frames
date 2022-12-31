@@ -4,11 +4,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// import { trpc } from "../utils/trpc";
-
 const Home: NextPage = () => {
   const [data, setData] = useState(null);
-  // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
   const callAPI = async (event: any) => {
 
     console.log("event", event.target.value);
