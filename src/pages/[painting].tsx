@@ -2,16 +2,30 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button, ColorInput, NumberInput, Select, Slider, Title } from "@mantine/core";
+import { ColorInput, NumberInput } from "@mantine/core";
 import Canvas from "../components/Canvas";
-import { Circle, Layer, Rect, Stage } from "react-konva";
+
+const loadImage = (setImageDimensions:({height, width}: {height:number, width:number}) => void, imageUrl:string) => {
+  const img = new Image();
+  img.src = imageUrl;
+
+  img.onload = () => {
+    setImageDimensions({
+      height: img.height,
+      width: img.width
+    });
+  };
+  img.onerror = (err) => {
+    console.log("img error");
+    console.error(err);
+  };
+};
 
 const Painting: NextPage = () => {
   const { query, isReady } = useRouter();
 
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  const [matWidth, setMatWidth] = useState(40);
   const [matColor, setMatColor] = useState("#e8e8e8");
 
 
@@ -19,6 +33,8 @@ const Painting: NextPage = () => {
   const [rMargin, setRMargin] = useState(0);
   const [bMargin, setBMargin] = useState(0);
   const [lMargin, setLMargin] = useState(0);
+
+  const [imageDimensions, setImageDimensions] = useState({});
 
   useEffect(() => {
     if (!isReady) {
@@ -33,6 +49,7 @@ const Painting: NextPage = () => {
       .then((data) => {
         setData(data.data);
         setLoading(false);
+        loadImage(setImageDimensions, `https://www.artic.edu/iiif/2/${data.data.image_id}/full/843,/0/default.jpg`);
       });
 
   }, [isReady]);
@@ -55,8 +72,7 @@ const Painting: NextPage = () => {
     { label: "Ornate", value: "ornate" },
     { label: "Wooden", value: "wooden" }
   ];
-
-
+  
 
   return (
     <div className="grid grid-cols-3 bg-teal-900 h-screen">
@@ -64,25 +80,19 @@ const Painting: NextPage = () => {
         <div className="flex flex-col justify-between h-full">
           <div>
         <Link href="/" className="mb-16 uppercase"> Back</Link>
-        <div className="my-4 space-y-4">
+        <div className="my-4">
           <h1 className="text-4xl font-bold">{data.title}</h1>
           <h2 className="text-xl">{data.artist_title}</h2>
         </div>
 
-
-        <div className="space-y-4 mt-16">
+        <div className="space-y-5 mt-16">
           <div className="flex justify-between space-x-2">
             <NumberInput label="Top" value={tMargin} onChange={(tMargin) => setTMargin(tMargin||0)}/>
             <NumberInput label="Right" value={rMargin} onChange={(rMargin) => setRMargin(rMargin||0)}/>
             <NumberInput label="Bottom" value={bMargin} onChange={(bMargin) => setBMargin(bMargin||0)}/>
             <NumberInput label="Left" value={lMargin} onChange={(lMargin) => setLMargin(lMargin||0)}/>
           </div>
-          {/*<Title>Mat Width</Title>*/}
-          {/*<Select*/}
-          {/*  data={aspectRatios}*/}
-          {/*  label="Aspect Ratio"*/}
-          {/*/>*/}
-          {/*<Slider value={matWidth} onChange={setMatWidth} />*/}
+
           <ColorInput
             name="color"
             label="Mat Color"
@@ -106,8 +116,8 @@ const Painting: NextPage = () => {
       </div>
 
       <div className="col-span-2 m-16 shadow-2xl">
-        <Canvas matWidth={matWidth} matColor={matColor} imageUrl={`https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`} tMargin={tMargin}
-        rMargin={rMargin} bMargin={bMargin} lMargin={lMargin}/>
+        <Canvas matColor={matColor} imageUrl={`https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`} tMargin={tMargin}
+        rMargin={rMargin} bMargin={bMargin} lMargin={lMargin} imageDimensions={imageDimensions}/>
         {/*<img src={`https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`} alt={data.title}*/}
         {/*     className="object-cover col-span-2 p-16" />*/}
       </div>

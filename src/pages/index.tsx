@@ -51,7 +51,7 @@ const Home: NextPage = () => {
         <div className="py-2 flex gap-8 items-bottom justify-between">
           <h1 className="text-6xl text-teal-300 font-bold mb-6">Art Search</h1>
           <input
-            className="p-3 mb-16 w-80 rounded-md border border-gray-200 bg-transparent text-white placeholder:text-gray-200"
+            className="p-3 mb-16 w-80 rounded-md border border-gray-200 bg-teal-800 text-white placeholder:text-gray-200"
             onChange={debounce(callAPI, 200)} type="text" placeholder="Search..."></input>
         </div>
 

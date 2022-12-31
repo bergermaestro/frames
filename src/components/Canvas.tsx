@@ -1,10 +1,12 @@
-import { Stage, Layer, Rect, Circle, Image } from "react-konva";
+import { Stage, Layer, Rect, Circle, Image, Line } from "react-konva";
+import Konva from "konva";
 import useImage from "use-image";
 
-const Canvas = ({ matWidth, matColor, imageUrl, tMargin, rMargin, bMargin, lMargin }: { matWidth: number, matColor: string, imageUrl: string, tMargin: number, rMargin: number, bMargin: number, lMargin: number }) => {
+const Canvas = ({ matColor, imageUrl, tMargin, rMargin, bMargin, lMargin, imageDimensions }: { matColor: string, imageUrl: string, tMargin: number, rMargin: number, bMargin: number, lMargin: number, imageDimensions: { height:number, width:number } }) => {
   const Painting = () => {
     const [image] = useImage(imageUrl);
-    return <Image image={image} width={843} x={lMargin} y={tMargin}/>;
+    return <Image image={image} width={imageDimensions.width} height={imageDimensions.height} x={lMargin} y={tMargin} />;
+  //   shadowColor='black' shadowBlur={0} shadowOffset={{x: 10, y: 10}} shadowOpacity={0.5}
   };
 
   const MatTexture = () => {
@@ -14,11 +16,13 @@ const Canvas = ({ matWidth, matColor, imageUrl, tMargin, rMargin, bMargin, lMarg
   };
 
   return (
-    <Stage width={843 + lMargin + rMargin} height={843 + tMargin + bMargin}>
+    <Stage width={imageDimensions.width + lMargin + rMargin} height={imageDimensions.height + tMargin + bMargin}>
       <Layer>
-        <Rect width={843  + lMargin + rMargin} height={843 + tMargin + bMargin} fill={matColor} />
+        <Rect width={imageDimensions.width  + lMargin + rMargin} height={imageDimensions.height + tMargin + bMargin} fill={matColor} />
         <MatTexture />
         <Painting />
+        <Line points={[lMargin, 900, lMargin, tMargin, 843 + lMargin, tMargin]} stroke="black" strokeWidth={2} opacity={0.25} filters={[Konva.Filters.Blur]} blurRadius={30} />
+        <Line points={[843 + lMargin, tMargin, 843 + lMargin, 900]} stroke="white" strokeWidth={2} opacity={0.4} filters={[Konva.Filters.Blur]} blurRadius={30} />
       </Layer>
     </Stage>
   );
