@@ -2,6 +2,7 @@ import { Stage, Layer, Rect, Circle, Image, Line } from "react-konva";
 import Konva from "konva";
 import useImage from "use-image";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const Color = require('color');
 
 const Canvas = ({ matColor, imageUrl, margins, imageDimensions }: { matColor: string, imageUrl: string, margins: {tMargin: number, rMargin: number, bMargin: number, lMargin: number}, imageDimensions: { height:number, width:number } }) => {
