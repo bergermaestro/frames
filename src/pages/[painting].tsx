@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ColorInput, NumberInput } from "@mantine/core";
-import Canvas from "../components/Canvas";
+import Canvas from "../components/NoSSRCanvas";
 
 // https://coolboi567.medium.com/dynamically-get-image-dimensions-from-image-url-in-react-d7e216887b68
 const loadImage = (setImageDimensions:({height, width}: {height:number, width:number}) => void, imageUrl:string) => {
