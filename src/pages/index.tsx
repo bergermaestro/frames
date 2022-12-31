@@ -3,6 +3,7 @@ import { debounce } from "lodash";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 const Home: NextPage = () => {
   const [data, setData] = useState(null);
@@ -53,9 +54,15 @@ const Home: NextPage = () => {
         </div>
 
         <div className="grid grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-8">
+          {/*<div className="bg-white rounded-md shadow-lg overflow-clip p-3 min-h-full">*/}
+          {/*  <div className="border-4 border-dashed rounded-md border-gray-200 min-h-full flex flex-col items-center justify-center">*/}
+          {/*    <IoCloudUploadOutline size={60}/>*/}
+          {/*    <h3 className="text-2xl font-bold text-gray-800">Custom Image</h3>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           {data.map((item: any) => (
             <Link href={`/${item.id}`} key={item.id}
-                  className="flex flex-col bg-white rounded-md shadow-lg overflow-clip">
+                  className="flex flex-col bg-white rounded-md shadow-lg overflow-clip hover:scale-[102%] transition-transform duration-150 ease-in-out">
               <img src={`https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`} alt={item.title}
                    className="h-64 w-full object-cover" />
               <div className="p-4">
@@ -64,6 +71,11 @@ const Home: NextPage = () => {
               </div>
             </Link>
           ))}
+          {/*<div className="bg-white rounded-md shadow-lg overflow-clip p-3 min-h-full">*/}
+          {/*  <div className="border-4 border-dashed rounded-md border-gray-200 min-h-full flex items-center justify-center">*/}
+          {/*    <h3 className="text-2xl font-bold text-gray-800">Load More...</h3>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
 
       </main>
